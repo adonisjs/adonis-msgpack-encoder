@@ -10,7 +10,7 @@
     "browser.js"
   ],
   "scripts": {
-    "build": "webpack index.js -o browser.js --mode=production",
+    "build": "webpack --mode=production",
     "lint": "standard",
     "prepublishOnly": "npm run build",
     "pretest": "npm run lint",
