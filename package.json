@@ -1,6 +1,6 @@
 {
   "name": "@adonisjs/msgpack-encoder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Message pack encoder to encoder and decode packages",
   "main": "index.js",
   "module": "index.js",
@@ -10,7 +10,7 @@
     "browser.js"
   ],
   "scripts": {
-    "build": "webpack index.js -o browser.js --mode=production",
+    "build": "webpack --mode=production",
     "lint": "standard",
     "prepublishOnly": "npm run build",
     "pretest": "npm run lint",

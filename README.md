@@ -7,6 +7,14 @@ The msgpack encoder for Adonis websockets. This library can be used by browsers 
 npm i --save @adonisjs/msgpack-encoder
 ```
 
+## CDN
+```
+<script src="https://unpkg.com/@adonisjs/msgpack-encoder"></script>
+<script>
+  const msgPack = new adonis.MsgPack()
+</script>
+```
+
 ```js
 const MsgPack = require('@adonisjs/msgpack-encoder')
 const msgPack = new MsgPack()
