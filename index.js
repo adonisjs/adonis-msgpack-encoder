@@ -9,7 +9,8 @@
  * file that was distributed with this source code.
 */
 
-const msgpackLite = require('msgpack-lite')
+const { Encoder } = require('msgpack-lite/lib/encoder')
+const { Decoder } = require('msgpack-lite/lib/decoder')
 
 class MsgPack {
   /**
@@ -36,7 +37,7 @@ class MsgPack {
    */
   encode (payload, callback) {
     try {
-      msgpackLite.Encoder().on('data', function (data) {
+      Encoder().on('data', function (data) {
         callback(null, data)
       }).encode(payload)
     } catch (error) {
@@ -57,8 +58,7 @@ class MsgPack {
    */
   decode (payload, callback) {
     try {
-      msgpackLite
-        .Decoder()
+      Decoder()
         .on('data', function (data) {
           callback(null, data)
         })

@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Message pack encoder to encoder and decode packages",
   "main": "index.js",
+  "module": "index.js",
   "browser": "browser.js",
-  "module": "browser.js",
   "files": [
     "index.js",
     "browser.js"
   ],
   "scripts": {
-    "build": "babel --out-file=browser.js index.js --presets=env",
+    "build": "webpack index.js -o browser.js --mode=production",
     "lint": "standard",
     "prepublishOnly": "npm run build",
     "pretest": "npm run lint",
@@ -25,7 +25,6 @@
   "author": "virk",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "coveralls": "^3.0.0",
@@ -33,7 +32,9 @@
     "japa": "^1.0.6",
     "japa-cli": "^1.0.1",
     "nyc": "^11.4.1",
-    "standard": "^11.0.0"
+    "standard": "^11.0.0",
+    "webpack": "^4.0.0-beta.2",
+    "webpack-cli": "^2.0.6"
   },
   "dependencies": {
     "msgpack-lite": "^0.1.26"
@@ -42,5 +43,11 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "standard": {
+    "ignore": [
+      "browser.js",
+      "dist/*"
+    ]
   }
 }
