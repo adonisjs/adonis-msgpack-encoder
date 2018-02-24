@@ -1,6 +1,6 @@
 {
   "name": "@adonisjs/msgpack-encoder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Message pack encoder to encoder and decode packages",
   "main": "index.js",
   "module": "index.js",
