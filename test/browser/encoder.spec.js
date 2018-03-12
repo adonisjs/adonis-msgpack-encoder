@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * adonis-websocket
+ * adonis-websocket-encoder
  *
  * (c) Harminder Virk <virk@adonisjs.com>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
 */
 
-const test = require('japa')
-const MsgPack = require('..')
-const msgpackLite = require('msgpack-lite')
+import './helpers'
+import msgpack from '../../dist/msgpack.browser.js'
+import msgpackLite from 'msgpack-lite'
 
 function makePayload (data) {
   return { t: 'news', d: data }
@@ -21,14 +21,12 @@ function extractPayload (payload) {
   return payload.d
 }
 
-test.group('Encoder', () => {
+group('Encoder', () => {
   test('should have a name', function (assert) {
-    assert.equal(MsgPack.name, 'msgpack')
+    assert.equal(msgpack.name, 'msgpack')
   })
 
   test('encode plain string', function (assert, done) {
-    const msgpack = new MsgPack()
-
     msgpack.encode(makePayload('hello world'), (error, payload) => {
       if (error) {
         return done(error)
@@ -39,8 +37,6 @@ test.group('Encoder', () => {
   })
 
   test('encode object', function (assert, done) {
-    const msgpack = new MsgPack()
-
     msgpack.encode(makePayload({ username: 'virk' }), (error, payload) => {
       if (error) {
         return done(error)
@@ -51,8 +47,6 @@ test.group('Encoder', () => {
   })
 
   test('encode buffer', function (assert, done) {
-    const msgpack = new MsgPack()
-
     msgpack.encode(makePayload(Buffer.from('hello')), (error, payload) => {
       if (error) {
         return done(error)
@@ -63,8 +57,6 @@ test.group('Encoder', () => {
   })
 
   test('encode array buffer', function (assert, done) {
-    const msgpack = new MsgPack()
-
     msgpack.encode(makePayload(new ArrayBuffer(2)), (error, payload) => {
       if (error) {
         return done(error)
@@ -75,7 +67,6 @@ test.group('Encoder', () => {
   })
 
   test('decode string', function (assert, done) {
-    const msgpack = new MsgPack()
     const encoded = msgpackLite.encode(makePayload('hello world'))
 
     msgpack.decode(encoded, (error, payload) => {
@@ -88,7 +79,6 @@ test.group('Encoder', () => {
   })
 
   test('decode buffer', function (assert, done) {
-    const msgpack = new MsgPack()
     const encoded = msgpackLite.encode(makePayload(Buffer.from('hello world')))
 
     msgpack.decode(encoded, (error, payload) => {
@@ -101,7 +91,6 @@ test.group('Encoder', () => {
   })
 
   test('decode ArrayBuffer', function (assert, done) {
-    const msgpack = new MsgPack()
     const encoded = msgpackLite.encode(makePayload(new ArrayBuffer([2])))
 
     msgpack.decode(encoded, (error, payload) => {
@@ -114,9 +103,20 @@ test.group('Encoder', () => {
   })
 
   test('return error when unable to decode value', function (assert, done) {
-    const msgpack = new MsgPack()
     msgpack.decode('hello world', (error) => {
       assert.exists(error)
+      done()
+    })
+  })
+
+  test('decode blob', function (assert, done) {
+    const encoded = new Blob([msgpackLite.encode(makePayload({ name: 'virk' }))])
+
+    msgpack.decode(encoded, (error, payload) => {
+      if (error) {
+        return done(error)
+      }
+      assert.deepEqual(extractPayload(payload), { name: 'virk' })
       done()
     })
   })

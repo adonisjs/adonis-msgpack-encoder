@@ -8,65 +8,49 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
 */
+// FOR NODE.JS ONLY
 
-const { Encoder } = require('msgpack-lite/lib/encoder')
-const { Decoder } = require('msgpack-lite/lib/decoder')
+const msgpack = require('msgpack-lite')
 
-class MsgPack {
+module.exports = {
+  name: 'msgpack',
   /**
-   * Encoder name. Used to communicate with the
-   * client
-   *
-   * @method name
-   *
-   * @return {String}
-   */
-  static get name () {
-    return 'msgpack'
-  }
-
-  /**
-   * Encodes a value asynchronously.
+   * Encode the payload
    *
    * @method encode
    *
-   * @param  {Mixed}   payload
+   * @param  {Mixed}    payload
    * @param  {Function} callback
    *
-   * @return {Buffer}
+   * @return {void}
    */
   encode (payload, callback) {
+    let encoded = null
     try {
-      Encoder().on('data', function (data) {
-        callback(null, data)
-      }).encode(payload)
+      encoded = msgpack.encode(payload)
     } catch (error) {
-      /* istanbul ignore next */
-      callback(error)
+      return callback(error)
     }
-  }
+    callback(null, encoded)
+  },
 
   /**
-   * Decodes a previously encoded value.
+   * Decode payload
    *
    * @method decode
    *
    * @param  {Buffer}   payload
    * @param  {Function} callback
    *
-   * @return {Mixed}
+   * @return {void}
    */
   decode (payload, callback) {
+    let decoded = null
     try {
-      Decoder()
-        .on('data', function (data) {
-          callback(null, data)
-        })
-        .decode(payload)
+      decoded = msgpack.decode(payload)
     } catch (error) {
-      callback(error)
+      return callback(error)
     }
+    callback(null, decoded)
   }
 }
-
-module.exports = MsgPack
