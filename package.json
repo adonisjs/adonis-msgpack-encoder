@@ -3,19 +3,20 @@
   "version": "1.0.3",
   "description": "Message pack encoder to encoder and decode packages",
   "main": "index.js",
-  "module": "index.js",
-  "browser": "browser.js",
+  "browser": "dist/msgpack.browser.js",
+  "module": "dist/msgpack.es.js",
   "files": [
     "index.js",
-    "browser.js"
+    "dist"
   ],
   "scripts": {
-    "build": "webpack --mode=production",
+    "build": "webpack",
     "lint": "standard",
     "prepublishOnly": "npm run build",
-    "pretest": "npm run lint",
-    "test": "nyc japa",
-    "posttest": "nyc report --reporter=text-lcov | coveralls"
+    "pretest": "npm run lint & npm run build",
+    "test:node": "japa",
+    "test:karma": "babel-external-helpers > test/browser/helpers.js && karma start karma.config.js",
+    "test": "npm run test:node & npm run test:karma"
   },
   "keywords": [
     "websocket",
@@ -25,19 +26,28 @@
   "author": "virk",
   "license": "MIT",
   "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
-    "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "japa": "^1.0.6",
     "japa-cli": "^1.0.1",
-    "nyc": "^11.4.1",
+    "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-japa": "^1.0.2",
+    "karma-webpack": "^2.0.13",
+    "puppeteer": "^1.1.1",
+    "rollup": "^0.56.5",
     "standard": "^11.0.0",
     "webpack": "^4.0.0-beta.2",
     "webpack-cli": "^2.0.6"
   },
   "dependencies": {
-    "msgpack-lite": "^0.1.26"
+    "msgpack-lite": "^0.1.26",
+    "simple-message-reader": "^1.0.4"
   },
   "config": {
     "commitizen": {
@@ -46,8 +56,14 @@
   },
   "standard": {
     "ignore": [
-      "browser.js",
-      "dist/*"
+      "dist/*.js",
+      "test/browser/helpers.js"
+    ],
+    "globals": [
+      "group",
+      "test",
+      "Blob",
+      "ArrayBuffer"
     ]
   }
 }
